@@ -765,6 +765,12 @@ class AssetService implements SingletonInterface
             return;
         }
         foreach ($assetCacheFiles as $assetCacheFile) {
+            // START FIX to update file modification/creation time ;)
+            $content = file_get_contents($assetCacheFile);
+            unlink($assetCacheFile);
+            $this->writeFile($assetCacheFile, $content);
+            // END FIX to update file modification/creation time ;)
+            
             touch($assetCacheFile, 0);
         }
         static::$cacheCleared = true;
